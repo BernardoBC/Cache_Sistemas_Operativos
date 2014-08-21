@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
+import java.security.AlgorithmConstraints;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -19,17 +20,21 @@ public class main {
         escribir("********* Programa Empezado *********");
         Scanner scan = new Scanner(System.in);
         Cache cache = new Cache();
-        int alg=0;
         System.out.println("tamaño de cache (n elementos):");
         cache.setTamañoDeCache(Integer.parseInt(scan.next()));
         escribir("Tamaño de cache definida: "+cache.getTamañoDeCache());
+        int alg = algoritmoReemplazo(scan);
+
         while(true){
             System.out.println("Opciones:\n1) Accesar pagina\t2) Ver cache\t3) Limpiar Cache\t4) Algoritmo de Reemplazo\t5) Salir");
             int opcion = Integer.parseInt(scan.next());
             switch(opcion){
                 //Accesar Pagina
                 case 1:
-
+                    if(alg==0){
+                        opcion = 4;
+                        break;
+                    }
                     //Elegir pagina y crear directorios apropiados
                     escribir("Accesar Pagina");
                     System.out.println("URL: \nb) bernardobc.github.io\tg) google.com\tn) nacion.com\tc) cancelar");
@@ -103,6 +108,12 @@ public class main {
                                 }else if(alg==3){
                                     escribir("Algoritmo RR empezando");
                                     RandomReplacement(parsed.get(i),images.get(i),urlInput,cache);
+                                }else if(alg==4){
+                                    escribir("Algoritmo MRU empezando");
+                                    MRU(parsed.get(i),images.get(i),urlInput,cache);
+                                }else if(alg==5){
+                                    escribir("Algoritmo LFU empezando");
+                                    LFU(parsed.get(i),images.get(i),urlInput,cache);
                                 }
 
                             }
@@ -168,21 +179,7 @@ public class main {
                     break;
                 //salir
                 case 4:
-                    escribir("Algoritmo de Reemplazo");
-                    System.out.println("Elegir algoritmo de Reemplazo:\n1) FIFO\t 2)LRU");
-                    alg = Integer.parseInt(scan.next());
-                    switch(alg){
-                        case 1:
-                            escribir("FIFO es ahora algoritmo de reemplazo");
-                            break;
-                        case 2:
-                            escribir("LRU es ahora algoritmo de reemplaz");
-                            break;
-                        case 3:
-                            escribir("Random Replacement es ahora algoritmo de reemplazo");
-                        default:
-                            break;
-                    }
+                    alg = algoritmoReemplazo(scan);
                     break;
                 case 5:
                     escribir("Programa Terminado");
@@ -192,6 +189,33 @@ public class main {
                     break;
             }
         }
+    }
+
+    public static int algoritmoReemplazo(Scanner s){
+        escribir("Algoritmo de Reemplazo: ");
+        System.out.println("Elegir algoritmo de Reemplazo:\n1) FIFO\t 2)LRU\t3) RR\t4) MRU");
+        int alg = Integer.parseInt(s.next());
+        switch(alg){
+            case 1:
+                escribir("FIFO es ahora algoritmo de reemplazo");
+                break;
+            case 2:
+                escribir("LRU es ahora algoritmo de reemplaz");
+                break;
+            case 3:
+                escribir("Random Replacement es ahora algoritmo de reemplazo");
+                break;
+            case 4:
+                escribir("MRU es ahora algoritmo de reemplazo");
+                break;
+            case 5:
+                escribir("LFU es ahora algoritmo de reemplazo");
+                break;
+            default:
+                alg = 0;
+                break;
+        }
+        return alg;
     }
 
     public static ArrayList<String> parser(String toParse){
@@ -297,13 +321,15 @@ public class main {
     public static void FIFO(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
         //Encontrar el mas viejo
         int itemMasViejo = cache.masViejo();
-        escribir("indice mas viejo: "+itemMasViejo);
+        escribir("indice primero ingresado: "+itemMasViejo+" ultimo acceso: "+cache.getTabla().get(itemMasViejo).getHoraUltimoAccesso().toString());
         cache.swap(nombreArchivo,imagen,pagina,itemMasViejo);
     }
 
     //LRU
     public static void LRU(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
-        FIFO(nombreArchivo,imagen,pagina,cache);
+        int itemMasViejo = cache.masViejo();
+        escribir("indice menos recientemente usado: "+itemMasViejo+" ultimo acceso: "+cache.getTabla().get(itemMasViejo).getHoraUltimoAccesso().toString());
+        cache.swap(nombreArchivo, imagen, pagina, itemMasViejo);
     }
 
     //RR
@@ -313,5 +339,18 @@ public class main {
         cache.swap(nombreArchivo,imagen,pagina,random);
     }
 
+    //MRU
+    public static void MRU(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
+        int itemMasNuevo = cache.masNuevo();
+        escribir("indice mas nuevo: "+itemMasNuevo+" ultimo acceso: "+cache.getTabla().get(itemMasNuevo).getHoraUltimoAccesso().toString());
+        cache.swap(nombreArchivo,imagen,pagina,itemMasNuevo);
+    }
+
+    //LFU
+    public static void LFU(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
+        int menosUsado = cache.menosUsado();
+        escribir("indice menos usado: "+menosUsado+" accesos: "+cache.getTabla().get(menosUsado).getNumeroDeAccesos());
+        cache.swap(nombreArchivo,imagen,pagina,menosUsado);
+    }
 
 }

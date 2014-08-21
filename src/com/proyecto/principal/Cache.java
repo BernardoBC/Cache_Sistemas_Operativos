@@ -98,6 +98,27 @@ public class Cache {
         }
         return x;
     }
+    public int masNuevo(){
+        Timestamp nuevo=tabla.get(0).getHoraUltimoAccesso();
+        int x = 0;
+        for (int i = 1; i < tabla.size(); i++) {
+            if(tabla.get(i).getHoraUltimoAccesso().after(nuevo)){
+                nuevo = tabla.get(i).getHoraUltimoAccesso();
+                x = i;
+            }
+        }
+        return x;
+    }
+
+    public int menosUsado(){
+        int menosUsado = 0;
+        for (int i = 0; i < tabla.size(); i++) {
+            if(tabla.get(i).getNumeroDeAccesos()<tabla.get(menosUsado).getNumeroDeAccesos()){
+                menosUsado=i;
+            }
+        }
+        return menosUsado;
+    }
 
 
 
