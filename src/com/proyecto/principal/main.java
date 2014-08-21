@@ -5,8 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.security.MessageDigest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -17,11 +19,12 @@ public class main {
         escribir("********* Programa Empezado *********");
         Scanner scan = new Scanner(System.in);
         Cache cache = new Cache();
+        int alg=0;
         System.out.println("tamaño de cache (n elementos):");
         cache.setTamañoDeCache(Integer.parseInt(scan.next()));
         escribir("Tamaño de cache definida: "+cache.getTamañoDeCache());
         while(true){
-            System.out.println("Opciones:\n1) Accesar pagina\t2) Ver cache\t3) Limpiar Cache\t4) Salir");
+            System.out.println("Opciones:\n1) Accesar pagina\t2) Ver cache\t3) Limpiar Cache\t4) Algoritmo de Reemplazo\t5) Salir");
             int opcion = Integer.parseInt(scan.next());
             switch(opcion){
                 //Accesar Pagina
@@ -69,6 +72,13 @@ public class main {
                         ItemDeCache imagen = cache.buscarImagen(parsed.get(i));
                         if(imagen != null){
                             escribir("imagen encontrada en cache");
+
+                            //if LRU
+                            if(alg==2){
+                                //LRU - tiempo de acceso actualizado
+                                imagen.setHoraUltimoAccesso(ahora());
+                            }
+
                             escribir("comparando...");
                             if(igual(images.get(i),imagen)){
                                 escribir("las imagenes son iguales.");
@@ -84,8 +94,16 @@ public class main {
                             }
                             else{
                                 //Algoritmo de Reemplazo
-                                //FIFO
-                                FIFO(parsed.get(i),images.get(i),urlInput,cache);
+                                if(alg==1){
+                                    escribir("Algoritmo FIFO empezando");
+                                    FIFO(parsed.get(i),images.get(i),urlInput,cache);
+                                }else if(alg==2){
+                                    escribir("Algoritmo LRU empezando");
+                                    LRU(parsed.get(i),images.get(i),urlInput,cache);
+                                }else if(alg==3){
+                                    escribir("Algoritmo RR empezando");
+                                    RandomReplacement(parsed.get(i),images.get(i),urlInput,cache);
+                                }
 
                             }
                             escribir("buscando imagen en \"descarga\"");
@@ -150,6 +168,23 @@ public class main {
                     break;
                 //salir
                 case 4:
+                    escribir("Algoritmo de Reemplazo");
+                    System.out.println("Elegir algoritmo de Reemplazo:\n1) FIFO\t 2)LRU");
+                    alg = Integer.parseInt(scan.next());
+                    switch(alg){
+                        case 1:
+                            escribir("FIFO es ahora algoritmo de reemplazo");
+                            break;
+                        case 2:
+                            escribir("LRU es ahora algoritmo de reemplaz");
+                            break;
+                        case 3:
+                            escribir("Random Replacement es ahora algoritmo de reemplazo");
+                        default:
+                            break;
+                    }
+                    break;
+                case 5:
                     escribir("Programa Terminado");
                     System.exit(0);
                     break;
@@ -251,12 +286,31 @@ public class main {
         return outputStream.size();
     }
 
+    public static Timestamp ahora(){
+        java.util.Date date= new java.util.Date();
+        return new Timestamp(date.getTime());
+    }
+
     //Algoritmos de Reemplazo
 
+    //FIFO
     public static void FIFO(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
         //Encontrar el mas viejo
-        int itemMasVieja = cache.masViejo();
-        cache.swap(nombreArchivo,imagen,pagina,itemMasVieja);
+        int itemMasViejo = cache.masViejo();
+        escribir("indice mas viejo: "+itemMasViejo);
+        cache.swap(nombreArchivo,imagen,pagina,itemMasViejo);
+    }
+
+    //LRU
+    public static void LRU(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
+        FIFO(nombreArchivo,imagen,pagina,cache);
+    }
+
+    //RR
+    public static void RandomReplacement(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
+        Random randomGenerator = new Random();
+        int random = randomGenerator.nextInt(cache.getTabla().size());
+        cache.swap(nombreArchivo,imagen,pagina,random);
     }
 
 
