@@ -24,7 +24,10 @@ public class main {
             System.out.println("Opciones:\n1) Accesar pagina\t2) Ver cache\t3) Limpiar Cache\t4) Salir");
             int opcion = Integer.parseInt(scan.next());
             switch(opcion){
+                //Accesar Pagina
                 case 1:
+
+                    //Elegir pagina y crear directorios apropiados
                     escribir("Accesar Pagina");
                     System.out.println("URL: \nb) bernardobc.github.io\tg) google.com\tn) nacion.com\tc) cancelar");
                     String s = scan.next();
@@ -52,16 +55,17 @@ public class main {
                         escribir("Directorio encontrado");
                     }
 
-
+                    //Crear Connection, descargar y parsear html, descargar imagenes
                     HttpConnection httpConnect = new HttpConnection(url);
                     String html = httpConnect.GET();
                     ArrayList<String> parsed = parser(html+"\n\n");
                     ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
                     for (int i = 0; i < parsed.size(); i++) {
-                        //System.out.println(parsed.get(i));
                         escribir("imagen encontrada en pagina web: "+parsed.get(i));
                         images.add(httpConnect.getImage(parsed.get(i)));
                         escribir("buscando imagen en cache");
+
+                        //Buscar en Cache
                         ItemDeCache imagen = cache.buscarImagen(parsed.get(i));
                         if(imagen != null){
                             escribir("imagen encontrada en cache");
@@ -77,6 +81,12 @@ public class main {
                             if(cache.tieneEspacio()){
                                 escribir("cache tiene espacio libre. agregando imagen a cache");
                                 cache.agregar(parsed.get(i),images.get(i),urlInput);
+                            }
+                            else{
+                                //Algoritmo de Reemplazo
+                                //FIFO
+                                FIFO(parsed.get(i),images.get(i),urlInput,cache);
+
                             }
                             escribir("buscando imagen en \"descarga\"");
                             File outputfile = new File(directory+parsed.get(i));
@@ -239,6 +249,14 @@ public class main {
         ImageIO.write(imagen, "jpg", outputStream);
         outputStream.close();
         return outputStream.size();
+    }
+
+    //Algoritmos de Reemplazo
+
+    public static void FIFO(String nombreArchivo,BufferedImage imagen,String pagina, Cache cache){
+        //Encontrar el mas viejo
+        int itemMasVieja = cache.masViejo();
+        cache.swap(nombreArchivo,imagen,pagina,itemMasVieja);
     }
 
 

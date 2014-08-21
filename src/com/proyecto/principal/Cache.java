@@ -3,6 +3,7 @@ package com.proyecto.principal;
 import java.awt.image.BufferedImage;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Bernardo Bonilla on 20/8/14.
@@ -80,6 +81,25 @@ public class Cache {
         }
         this.tamañoDeCache = tamañoDeCache;
     }
+
+    public void swap(String nombreArchivo,BufferedImage imagen,String pagina, int indice){
+        tabla.set(indice,new ItemDeCache(nombreArchivo,imagen,pagina));
+    }
+
+    public int masViejo(){
+        java.util.Date date= new java.util.Date();
+        Timestamp vijea = new Timestamp(date.getTime());
+        int x = 0;
+        for (int i = 0; i < tabla.size(); i++) {
+            if(tabla.get(i).getHoraUltimoAccesso().before(vijea)){
+                vijea = tabla.get(i).getHoraUltimoAccesso();
+                x = i;
+            }
+        }
+        return x;
+    }
+
+
 
     public ArrayList<ItemDeCache> getTabla() {
         return tabla;
