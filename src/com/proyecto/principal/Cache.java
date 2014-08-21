@@ -62,7 +62,7 @@ public class Cache {
     public String imprimir(){
         String out ="";
         //out+= getNombreArchivo() +"\t|\t" + getTipoArchivo() +"\t|\t" + getHash() +"\t|\t" + getTamaño() +"\t|\t"  + getNumeroDeAccesos() +"\t|\t"  + getHoraUltimoAccesso() +"\t|\t";
-        out+= "id\t|\t\t\tNombre\t\t\t|\tTipo\t|\t\t\t\tHash\t\t\t\t\t|\t\t\tPagina\t\t\t|\tTamaño\t|\t# Accesos\t|\tUltimo Acceso\t\t\t|\n";
+        out+= "id\t|\t\t\tNombre\t\t\t|\tTipo\t|\t\t\t\tHash\t\t\t\t\t|\t\t\tPagina\t\t\t|\tTamaño\t|\t# Accesos\t|\t\t\t Acceso\t\t\t|\n";
         out+="------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
         for (int i = 0; i < tabla.size(); i++) {
             out+=i+"\t|\t"+tabla.get(i).toString();
