@@ -17,7 +17,6 @@ public class ItemDeCache {
     private int tamaño;
     private String hash;
     private boolean empty;
-    private int LRUCount;
     public ItemDeCache(){
         setEmpty(true);
     }
@@ -25,7 +24,6 @@ public class ItemDeCache {
     public ItemDeCache(String nombreArchivo, BufferedImage imagen,String pagina){
         setEmpty(false);
         setPagina(pagina);
-        setLRUCount(0);
         java.util.Date date= new java.util.Date();
         setHoraUltimoAccesso(new Timestamp(date.getTime()));
         setImagen(imagen);
@@ -157,13 +155,5 @@ public class ItemDeCache {
             this.pagina = getPagina()+"                         ";
             this.pagina = getPagina().substring(0, 20);
         }
-    }
-
-    public int getLRUCount() {
-        return LRUCount;
-    }
-
-    public void setLRUCount(int LRUCount) {
-        this.LRUCount = LRUCount;
     }
 }
