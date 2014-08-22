@@ -50,7 +50,11 @@ public class ItemDeCache {
         if(isEmpty()){
             out+= "\t\t\t\t\t|\t\t\t|\t\t\t\t\t\t\t\t\t\t|\t\t\t\t\t\t\t|\t\t\t|\t\t\t\t|\t\t\t\t\t\t\t|\n";
         }else{
-            out+= getNombreSimple()+"\t|\t" + getTipoArchivo() +"\t\t|\t" + getHash() +"\t|\t"+ getPagina() + "\t|\t" + getTamaño() +"\t|\t\t"  + getNumeroDeAccesos() +"\t\t|\t"  + getHoraUltimoAccesso() +"\t|\t\n";
+            String tamañoString = ""+getTamaño();
+            if(tamañoString.length()<4){
+                tamañoString+="\t";
+            }
+            out+= getNombreSimple()+"\t|\t" + getTipoArchivo() +"\t\t|\t" + getHash() +"\t|\t"+ getPagina() + "\t|\t" + tamañoString +"\t|\t\t"  + getNumeroDeAccesos() +"\t\t|\t"  + getHoraUltimoAccesso() +"\t|\t\n";
         }
         return out;
     }

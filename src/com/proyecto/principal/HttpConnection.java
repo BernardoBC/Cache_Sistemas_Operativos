@@ -37,8 +37,10 @@ public class HttpConnection {
         try {
             String url ="";
             URL connection;
-            if(source.contains("http:")||source.startsWith("//")){
+            if(source.contains("http:")){
                 url=source;
+            }else if(source.startsWith("//")){
+                url="http:"+source;
             }else{
                url=urlString+"/"+source;
             }
