@@ -48,7 +48,7 @@ public class ItemDeCache {
     public String toString(){
         String out = "";
         if(isEmpty()){
-            out+= "\t\t\t\t\t\t|\t\t\t|\t\t\t\t\t\t\t\t\t\t|\t\t\t\t\t\t\t|\t\t\t|\t\t\t\t|\t\t\t\t\t\t\t|\n";
+            out+= "\t\t\t\t\t|\t\t\t|\t\t\t\t\t\t\t\t\t\t|\t\t\t\t\t\t\t|\t\t\t|\t\t\t\t|\t\t\t\t\t\t\t|\n";
         }else{
             out+= getNombreSimple()+"\t|\t" + getTipoArchivo() +"\t\t|\t" + getHash() +"\t|\t"+ getPagina() + "\t|\t" + getTamaño() +"\t|\t\t"  + getNumeroDeAccesos() +"\t\t|\t"  + getHoraUltimoAccesso() +"\t|\t\n";
         }
@@ -68,10 +68,10 @@ public class ItemDeCache {
             }
         }
         if(getNombreSimple().length()>20){
-            nombreSimple = getNombreSimple().substring(nombreSimple.length()-19);
+            nombreSimple = getNombreSimple().substring(nombreSimple.length()-18);
         }else{
-            nombreSimple = getNombreSimple()+"                      ";
-            nombreSimple = getNombreSimple().substring(0, 20);
+            nombreSimple = getNombreSimple()+"               ";
+            nombreSimple = getNombreSimple().substring(0, 18);
         }
     }
 

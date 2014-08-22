@@ -119,6 +119,9 @@ public class main {
 
                             }
                             escribir("buscando imagen en \"descarga\"");
+                            if(parsed.get(i).contains("//")){
+                                parsed.set(i,parsed.get(i).substring(parsed.get(i).indexOf("//")+1));
+                            }
                             File outputfile = new File(directory+parsed.get(i));
                             if(outputfile.exists()){
                                 escribir("imagen encontrada en \"descarca\"");
@@ -240,7 +243,7 @@ public class main {
         for (int i = 0; i < parsed.size(); i++) {
             String segments[] = parsed.get(i).split("\"");
             for (int j = 0; j < segments.length; j++) {
-                if(segments[j].endsWith("png")||segments[j].endsWith("jpg")||segments[j].endsWith("gif")){
+                if(segments[j].endsWith(".png")||segments[j].endsWith(".jpg")||segments[j].endsWith(".gif")){
                     returned.add(segments[j]);
                     //System.out.println(segments[j]);
                 }
