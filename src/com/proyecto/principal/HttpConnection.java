@@ -35,7 +35,15 @@ public class HttpConnection {
     public BufferedImage getImage(String source){
         //Image image = null;
         try {
-            URL connection = new URL(urlString+"/"+source);
+            String url ="";
+            URL connection;
+            if(source.contains("http:")){
+                url=source;
+            }else{
+               url=urlString+"/"+source;
+            }
+            connection = new URL(url);
+            System.out.println("url string: "+urlString+"/"+source);
             BufferedImage img = ImageIO.read(connection);
             /*image = ImageIO.read(connection);
             int w = image.getWidth(null);

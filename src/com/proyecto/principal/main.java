@@ -52,7 +52,8 @@ public class main {
                     }
                     String urlInput = s;
                     String url = "http://"+urlInput;
-                    escribir("Direccion: "+urlInput);
+                    System.out.println(""+urlInput);
+                    escribir("Direccion: "+url);
                     String directory = System.getProperty("user.dir")+"/descarga/"+urlInput+"/";
                     //url = "http://github.com/bernardobc";
                     File outputfolder = new File(System.getProperty("user.dir")+"/descarga/"+urlInput);
@@ -223,6 +224,7 @@ public class main {
         ArrayList<String> returned = new ArrayList<String>();
         for (int i=0; i<toParse.length(); i++){
             String helper="";
+            //<img src=
             if(toParse.charAt(i)=='<'&&toParse.charAt(i+1)=='i'&&toParse.charAt(i+2)=='m'&&toParse.charAt(i+3)=='g'){
                 while(toParse.charAt(i)!='>'){
                     helper += toParse.charAt(i);
