@@ -36,7 +36,7 @@ public class main {
                         break;
                     }
                     //Elegir pagina y crear directorios apropiados
-                    escribir("Accesar Pagina");
+                    escribir("Accesar Pagina (formato ejemplo 'reddit.com':");
                     System.out.println("URL: \nb) bernardobc.github.io\tg) google.com\tn) nacion.com\tc) cancelar");
                     String s = scan.next();
                     if(s.equals("b")){
