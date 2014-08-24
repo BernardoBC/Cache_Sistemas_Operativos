@@ -3,8 +3,6 @@ package com.proyecto.principal;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
-import java.security.AlgorithmConstraints;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.util.ArrayList;

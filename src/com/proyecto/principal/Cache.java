@@ -3,7 +3,6 @@ package com.proyecto.principal;
 import java.awt.image.BufferedImage;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Bernardo Bonilla on 20/8/14.
